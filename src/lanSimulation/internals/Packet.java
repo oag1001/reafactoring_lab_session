@@ -88,14 +88,14 @@ public class Packet {
 						title = message_.substring(startPos + 6, endPos);
 					}
 					;
-					network.accounting(report, author, title);
+					network.accounting(report, author, title, "Postscript");
 				} else {
 					title = "ASCII DOCUMENT";
 					if (message_.length() >= 16) {
 						author = message_.substring(8, 16);
 					}
 					;
-					network.accounting(report, author, title);
+					network.accounting(report, author, title, "ASCII Print");
 				}
 				;
 			} catch (IOException exc) {

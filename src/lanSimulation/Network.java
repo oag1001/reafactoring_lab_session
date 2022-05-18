@@ -216,16 +216,14 @@ public class Network {
 		Packet packet = new Packet("BROADCAST", firstNode_.name_, firstNode_.name_);
 		do {
 			try {
-				report.write("\tNode '");
-				report.write(currentNode.name_);
-				report.write("' accepts broadcase packet.\n");
-				currentNode.logging(report, this);
+				currentNode.logging(report, "' accepts broadcase packet.\n");
+				currentNode.logging(report, "' passes packet on.\n");
 			} catch (IOException exc) {
 				// just ignore
 			}
 			;
 			currentNode = currentNode.nextNode_;
-		} while (!packet.destination_.equals(currentNode.name_));
+		} while (!atDestination(currentNode, packet));
 
 		try {
 			report.write(">>> Broadcast travelled whole token ring.\n\n");
@@ -278,15 +276,15 @@ public class Network {
 		startNode = (Node) workstations_.get(workstation);
 
 		try {
-			startNode.logging(report, this);
+			startNode.logging(report, "' passes packet on.\n");
 		} catch (IOException exc) {
 			// just ignore
 		}
 		;
 		currentNode = startNode.nextNode_;
-		while ((!packet.destination_.equals(currentNode.name_)) & (!packet.origin_.equals(currentNode.name_))) {
+		while ((!atDestination(currentNode, packet)) & (!packet.origin_.equals(currentNode.name_))) {
 			try {
-				currentNode.logging(report, this);
+				currentNode.logging(report, "' passes packet on.\n");
 			} catch (IOException exc) {
 				// just ignore
 			}
@@ -295,7 +293,7 @@ public class Network {
 		}
 		;
 
-		if (packet.destination_.equals(currentNode.name_)) {
+		if (atDestination(currentNode, packet)) {
 			result = packet.printDocument(currentNode, this, report);
 		} else {
 			try {
@@ -311,13 +309,17 @@ public class Network {
 		return result;
 	}
 
-	public void accounting(Writer report, String author, String title) throws IOException {
+	private boolean atDestination(Node currentNode, Packet packet) {
+		return packet.destination_.equals(currentNode.name_);
+	}
+
+	public void accounting(Writer report, String author, String title, String type) throws IOException {
 		report.write("\tAccounting -- author = '");
 		report.write(author);
 		report.write("' -- title = '");
 		report.write(title);
 		report.write("'\n");
-		report.write(">>> ASCII Print job delivered.\n\n");
+		report.write(">>> " + type + " job delivered.\n\n");
 		report.flush();
 	}
 

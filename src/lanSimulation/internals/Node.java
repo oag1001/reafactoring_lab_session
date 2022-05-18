@@ -22,8 +22,6 @@ package lanSimulation.internals;
 import java.io.IOException;
 import java.io.Writer;
 
-import lanSimulation.Network;
-
 /**
  * A <em>Node</em> represents a single Node in a Local Area Network (LAN).
  * Several types of Nodes exist.
@@ -85,10 +83,10 @@ public class Node {
 		nextNode_ = nextNode;
 	}
 
-	public void logging(Writer report, Network network) throws IOException {
+	public void logging(Writer report, String action) throws IOException {
 		report.write("\tNode '");
 		report.write(name_);
-		report.write("' passes packet on.\n");
+		report.write(action);
 		report.flush();
 	}
 
