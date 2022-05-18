@@ -39,7 +39,7 @@ public class Network {
 	 * Holds a pointer to some "first" node in the token ring. Used to ensure that
 	 * various printing operations return expected behaviour.
 	 */
-	private Node firstNode_;
+	public Node firstNode_;
 	/**
 	 * Maps the names of workstations on the actual workstations. Used to initiate
 	 * the requests for the network.
@@ -79,7 +79,7 @@ public class Network {
 		Network network = new Network(2);
 
 		Node wsFilip = new WorkStation("Filip");
-		Node n1 = new Node(Node.NODE, "n1");
+		Node n1 = new Node("n1");
 		Node wsHans = new WorkStation("Hans");
 		Node prAndy = new Printer("Andy");
 
@@ -119,7 +119,7 @@ public class Network {
 		if (n == null) {
 			return false;
 		} else {
-			return n.type_ == Node.WORKSTATION;
+			return n.getClass() == WorkStation.class;
 		}
 	};
 
@@ -151,7 +151,7 @@ public class Network {
 		iter = workstations_.elements();
 		while (iter.hasMoreElements()) {
 			currentNode = (Node) iter.nextElement();
-			if (currentNode.type_ != Node.WORKSTATION) {
+			if (currentNode.getClass() != WorkStation.class) {
 				return false;
 			}
 			;
@@ -162,11 +162,11 @@ public class Network {
 		currentNode = firstNode_;
 		while (!encountered.containsKey(currentNode.name_)) {
 			encountered.put(currentNode.name_, currentNode);
-			if (currentNode.type_ == Node.WORKSTATION) {
+			if (currentNode.getClass() == WorkStation.class) {
 				workstationsFound++;
 			}
 			;
-			if (currentNode.type_ == Node.PRINTER) {
+			if (currentNode.getClass() == Printer.class) {
 				printersFound++;
 			}
 			;
@@ -391,28 +391,7 @@ public class Network {
 		buf.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<network>");
 		do {
 			buf.append("\n\t");
-			switch (currentNode.type_) {
-			case Node.NODE:
-				buf.append("<node>");
-				buf.append(currentNode.name_);
-				buf.append("</node>");
-				break;
-			case Node.WORKSTATION:
-				buf.append("<workstation>");
-				buf.append(currentNode.name_);
-				buf.append("</workstation>");
-				break;
-			case Node.PRINTER:
-				buf.append("<printer>");
-				buf.append(currentNode.name_);
-				buf.append("</printer>");
-				break;
-			default:
-				buf.append("<unknown></unknown>");
-				;
-				break;
-			}
-			;
+			currentNode.appendTypeNodeXML(buf);
 			currentNode = currentNode.nextNode_;
 		} while (currentNode != firstNode_);
 		buf.append("\n</network>");

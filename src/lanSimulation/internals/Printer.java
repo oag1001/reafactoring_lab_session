@@ -3,7 +3,7 @@ package lanSimulation.internals;
 public class Printer extends Node {
 
 	public Printer(String name) {
-		super(Node.PRINTER, name);
+		super(name);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -11,5 +11,11 @@ public class Printer extends Node {
 		buf.append("Printer ");
 		buf.append(name_);
 		buf.append(" [Printer]");
+	}
+	
+	public void appendTypeNodeXML(StringBuffer buf) {
+		buf.append("<printer>");
+		buf.append(name_);
+		buf.append("</printer>");
 	}
 }
