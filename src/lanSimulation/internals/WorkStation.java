@@ -6,5 +6,10 @@ public class WorkStation extends Node {
 		super(Node.WORKSTATION, name);
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	public void appendTypeNode(StringBuffer buf) {
+		buf.append("Workstation ");
+		buf.append(name_);
+		buf.append(" [Workstation]");
+	}
 }
